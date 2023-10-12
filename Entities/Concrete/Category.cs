@@ -17,3 +17,4 @@ namespace Entities.Concrete
 }
 //add-migration migrationname
 //update-database
+//örnek
