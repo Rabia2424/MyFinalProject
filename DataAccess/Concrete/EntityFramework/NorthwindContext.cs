@@ -13,7 +13,8 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=RABIA\SQLEXPRESS; Database=Northwind; TrustServerCertificate=True ;integrated security=true");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-1GEKNF6; Database=Northwind; TrustServerCertificate=True; integrated security=true",
+       options => options.EnableRetryOnFailure());
         }
 
         public DbSet<Product> Products { get; set; }
