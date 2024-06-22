@@ -10,6 +10,7 @@ using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
 using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -101,6 +102,12 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        public IResult Delete(Product product)
+        {
+            _productDal.Delete(product);
+            return new SuccessResult(Messages.ProductDeleted); 
+        }
+
         private IResult CheckIfProductCountOfCategory(int categoryId)
         {
             //Select count(*) from products where categoryId=1
@@ -116,8 +123,8 @@ namespace Business.Concrete
         {
             //Another example -> _productDal.GetAll(p => p.ProductName == productName).Any();
             //Any() -> Determines whether a sequence contains any elements.
-            var result = _productDal.GetAll(p => p.ProductName == productName);
-            if(result == null)
+            var result = _productDal.GetAll(p => p.ProductName == productName).Count;
+            if(result == 0)
             {
                 return new SuccessResult();
             }
@@ -133,5 +140,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+      
     }
 }
