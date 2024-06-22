@@ -33,18 +33,22 @@ namespace Business.Concrete
             //validation
             //ValidationTool.Validate(new ProductValidator(), product);
 
-            _productDal.Add(product);
+            if (CheckIfProductCountOfCategory(product.CategoryId).Success && CheckIfProductNameExists(product.ProductName).Success)
+            {
+                _productDal.Add(product);
 
-            return new SuccessResult(Messages.ProductAdded);
+                return new SuccessResult(Messages.ProductAdded);
+            }
+            return new ErrorResult();
         }
 
         public IDataResult<List<Product>> GetAll()
         {
-            if(DateTime.Now.Hour == 22)
+            if (DateTime.Now.Hour == 22)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
-           
+
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
 
         }
@@ -71,6 +75,36 @@ namespace Business.Concrete
             //    return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
             //}
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
+        }
+
+        [ValidationAspect(typeof(ProductValidator))]
+        public IResult Update(Product product)
+        {
+            _productDal.Update(product);
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProductCountOfCategory(int categoryId)
+        {
+            //Select count(*) from products where categoryId=1
+            var count = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
+            if (count >= 10)
+            {
+                return new ErrorResult(Messages.ProductCountExceed);
+            }
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfProductNameExists(string productName)
+        {
+            //Another example -> _productDal.GetAll(p => p.ProductName == productName).Any();
+            //Any() -> Determines whether a sequence contains any elements.
+            var result = _productDal.GetAll(p => p.ProductName == productName);
+            if(result == null)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult(Messages.ProductNameAlreadyExists);
         }
     }
 }

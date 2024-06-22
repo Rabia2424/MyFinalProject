@@ -13,5 +13,7 @@ namespace Business.Constants
         public static string ProductNameInvalid = "ProductName is invalid!";
         public static string MaintenanceTime = "System is under maintanence!";
         public static string ProductsListed = "Product Listed!";
+        public static string ProductCountExceed = "A category can have max 10 products!";
+        public static string ProductNameAlreadyExists = "Product name is not valid because it is already used!";
     }
 }
