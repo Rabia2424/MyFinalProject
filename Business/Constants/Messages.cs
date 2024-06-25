@@ -18,5 +18,12 @@ namespace Business.Constants
         public static string CategoryCountExceed = "Category number can be at most 15 to add new product!";
         public static string CategoryAdded = "Category Added!";
         public static string ProductDeleted = "Product deleted!";
+        public static string AuthorizationDenied = "Authorization denied!";
+        public static string UserRegistered = "User registered!";
+        public static string UserNotFound = "User can not be found!";
+        public static string PasswordError = "Password is not verified!";
+        public static string SuccessfulLogin = "User login successfully!";
+        public static string UserAlreadyExists = "User is already exists!";
+        public static string AccessTokenCreated = "Access token is created successfully!";
     }
 }
