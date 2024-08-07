@@ -24,9 +24,16 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 //builder.Services.AddSingleton<IProductService,ProductManager>();
 //builder.Services.AddSingleton<IProductDal, EfProductDal>();
+
+builder.Services.AddCors();
+
 
 builder.Services.AddDependencyResolvers(new ICoreModule[]
 {
@@ -64,6 +71,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureCustomExceptionMiddleware();
+
+app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
 app.UseHttpsRedirection();
 

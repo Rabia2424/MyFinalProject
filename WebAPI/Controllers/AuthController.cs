@@ -10,10 +10,11 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private IAuthService _authService;
-
-        public AuthController(IAuthService authService)
+        private ICartService _cartService;
+        public AuthController(IAuthService authService, ICartService cartService)
         {
             _authService = authService;
+            _cartService = cartService;
         }
 
         [HttpPost("login")]
@@ -22,16 +23,16 @@ namespace WebAPI.Controllers
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {
-                return BadRequest(userToLogin.Message);
+                return BadRequest(userToLogin);
             }
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                return Ok(result.Data);
+                return Ok(result);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result);
         }
 
         [HttpPost("register")]
@@ -47,6 +48,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
+                _cartService.InitializeCart(registerResult.Data.Id);
                 return Ok(result.Data);
             }
 

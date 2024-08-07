@@ -25,5 +25,10 @@ namespace Business.Constants
         public static string SuccessfulLogin = "User login successfully!";
         public static string UserAlreadyExists = "User is already exists!";
         public static string AccessTokenCreated = "Access token is created successfully!";
+        public static string CartItemAdded = "Cart Item added successfully!";
+        public static string InvalidUserId = "Invalid User Id!";
+        public static string ShowCart = "You have reached the cart!";
+        public static string CartItemRemoved = "Cart Item removed successfully!";
+        public static string CartItemNotFound = "Cart Item not found in the card!";
     }
 }

@@ -2,6 +2,7 @@
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,8 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public IActionResult Get()
         {
+            Thread.Sleep(1000);
+
             var result = _productService.GetAll();
             if (result.Success)
             {
@@ -40,6 +43,17 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+
+        [HttpGet("getallbycategoryid")]
+        public IActionResult GetAllByCategoryId(int id)
+        {
+            var result = _productService.GetAllByCategoryId(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);  
         }
 
         [HttpPost("add")]
